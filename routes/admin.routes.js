@@ -1,5 +1,6 @@
 const {Router} = require("express");
 const adminRouter = Router();
+const adminModel = require("../models/admin.model");
 
 //Test Route
 adminRouter.get("/",(req,res) => {

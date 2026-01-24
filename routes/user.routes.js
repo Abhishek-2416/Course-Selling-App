@@ -1,5 +1,7 @@
 const {Router} = require("express");
 const userRouter = Router();
+const UserModel = require("../models/user.model");
+const purchaseModel = require("../models/purchases.model");
 
 userRouter.get("/",(req,res) => {
     res.json({

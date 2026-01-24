@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 const userRouter = require("./routes/user.routes");
 const courseRouter = require("./routes/courses.routes");
@@ -16,6 +17,18 @@ app.use("/api/v1/user",userRouter);
 app.use("/api/v1/course",courseRouter);
 app.use("/api/v1/admin",adminRouter);
 
-app.listen(PORT,() => {
-    console.log(`Server is running on the PORT:${PORT}`);
-});
+async function main() {
+    mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => {
+        console.error("MongoDB error", err);
+        process.exit(1);
+    });
+
+    app.listen(PORT,() => {
+        console.log(`Server is running on the PORT:${PORT}`);
+    });
+
+};
+
+main();

@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.ObjectId;
 
 const courseSchema = new Schema({
-    courseId: ObjectId,
     courseTitle: String,
     description: String,
     price: Number,

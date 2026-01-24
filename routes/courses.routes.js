@@ -1,5 +1,6 @@
 const {Router} = require("express");
 const courseRouter = Router();
+const courseModel = require("../models/courses.model");
 
 //Purchase a course
 courseRouter.post("/purchase",(req,res) => {
