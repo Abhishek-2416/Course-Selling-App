@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user.model");
 const purchaseModel = require("../models/purchases.model");
 
-const auth = require("../middlewares/auth.middleware");
+const {userAuth} = require("../middlewares/auth.middleware");
 
 userRouter.get("/",(req,res) => {
     res.json({
@@ -60,7 +60,7 @@ userRouter.post("/signin",async (req,res) => {
     if(!verifyPassword){
         return res.status(403).json({message: "The password you have entered is incorrect. Please make sure to recheck the password or reset the password"});
     }else{
-        const token = jwt.sign({id: userExists._id},process.env.JWT_SECRET);
+        const token = jwt.sign({id: userExists._id},process.env.USER_JWT_SECRET);
         res.json({
             message: `You have logged in as User and here is your token: ${token}`
         });
@@ -68,7 +68,7 @@ userRouter.post("/signin",async (req,res) => {
 });
 
 //View purchased courses
-userRouter.get("/purchases",auth,(req,res) => {
+userRouter.get("/purchases",userAuth,(req,res) => {
     res.json({
         message: "Here are the courses purchased by you"
     });
