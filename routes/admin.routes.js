@@ -92,12 +92,25 @@ adminRouter.post("/addCourse",adminAuth,async (req,res) => {
 //Update courses
 adminRouter.put("/update/:courseId",adminAuth,async (req,res) => {
     const adminId = req._id;
+    const {title, description, price, imageURL, courseId } = req.body;
 
-    const courseExists = await courseModel.findOne({
+    const course = courseModel.updateOne({
+        _id: courseId,
+        creatorId: adminId
+    },{
+        courseTitle: title,
+        description: description,
+        price: price,
+        imageURL: imageURL
+    });
 
-    })
+    if(!course){
+        res.status(404).json("Course not found")
+    }
+
     res.json({
-        message: `Updated the course with the course Id`
+        message: `Updated the course with the course Id`,
+        courseId: course._id
     });
 });
 
