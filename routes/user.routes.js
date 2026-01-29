@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const UserModel = require("../models/user.model");
 const purchaseModel = require("../models/purchases.model");
+const courseModel = require("../models/courses.model");
 
 const {userAuth} = require("../middlewares/auth.middleware");
 
@@ -68,9 +69,24 @@ userRouter.post("/signin",async (req,res) => {
 });
 
 //View purchased courses
-userRouter.get("/purchases",userAuth,(req,res) => {
+userRouter.get("/purchases",userAuth,async (req,res) => {
+    const userId = req.userId;
+    const purchased = await purchaseModel.find({
+        userId:userId
+    });
+
+    console.log(purchased);
+    const courseIds = purchased.map(p => p.courseId);
+    console.log(courseIds);
+
+    const purchasedView = await courseModel.find({
+        _id: { $in: courseIds }
+    });
+    const courseTitles = purchasedView.map(course => course.courseTitle);
+
     res.json({
-        message: "Here are the courses purchased by you"
+        message: "Here are the courses purchased by you",
+        coursesPurchased: courseTitles
     });
 });
 
